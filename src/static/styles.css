@@ -74,6 +74,74 @@ section h3 {
   margin-bottom: 8px;
 }
 
+.participants {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #eee;
+}
+
+.participants h5 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.participants-list {
+  list-style-type: none; /* hide bullet points */
+  margin: 0;
+  padding: 0;
+}
+
+.participants-list li {
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Delete button/icon next to participant */
+.participant-delete {
+  margin-left: auto; /* push to the right */
+  background: transparent;
+  border: none;
+  color: #c62828;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 6px;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.participant-delete:hover {
+  background: rgba(198, 40, 40, 0.08);
+}
+
+.participant-email {
+  word-break: break-all;
+}
+
+/* Small name chip/badge to the left of each list item */
+.participant-badge {
+  display: inline-block;
+  min-width: 36px;
+  padding: 4px 8px;
+  font-size: 12px;
+  text-align: center;
+  background: linear-gradient(180deg, #e8eaf6, #d1d8ff);
+  color: #1a237e;
+  border-radius: 999px;
+  border: 1px solid rgba(26,35,126,0.08);
+}
+
+/* Subtle muted note when no participants exist */
+.participants-empty {
+  font-style: italic;
+  color: #666;
+  padding: 6px 0;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
