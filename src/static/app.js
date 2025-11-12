@@ -13,18 +13,40 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear loading message
       activitiesList.innerHTML = "";
 
+      // Clear and reset select options to avoid duplicates
+      activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
+
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
 
-        const spotsLeft = details.max_participants - details.participants.length;
+        const spotsLeftRaw = details.max_participants - details.participants.length;
+        const spotsLeft = Math.max(0, spotsLeftRaw);
+
+        // Build participants markup
+        let participantsMarkup = "";
+        if (Array.isArray(details.participants) && details.participants.length > 0) {
+          const items = details.participants
+            .map((p) => {
+              const initials = (p.match(/\b\w/g) || []).slice(0,2).join('').toUpperCase();
+              return `<li><span class="participant-badge">${initials || "?"}</span>${escapeHtml(p)}</li>`;
+            })
+            .join("");
+          participantsMarkup = `<ul class="participants-list">${items}</ul>`;
+        } else {
+          participantsMarkup = `<div class="participants-empty">No participants yet</div>`;
+        }
 
         activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
+          <h4>${escapeHtml(name)}</h4>
+          <p>${escapeHtml(details.description)}</p>
+          <p><strong>Schedule:</strong> ${escapeHtml(details.schedule)}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <div class="participants">
+            <h5>Participants</h5>
+            ${participantsMarkup}
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
@@ -84,3 +106,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize app
   fetchActivities();
 });
+
+// Small utility to escape HTML inserted via template strings
+function escapeHtml(str) {
+  if (typeof str !== "string") return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
